@@ -34,7 +34,9 @@ exports.config = {
     // will be copied to `paths.public`, which is "priv/static" by default.
     assets: /^(web\/static\/assets)/
   },
-
+  watcher: {
+    usePolling: true
+  },
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
