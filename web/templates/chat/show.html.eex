@@ -1,0 +1,12 @@
+<div id="chat">
+  <div class="messages">
+    <div class="log">
+    </div>
+
+    <div class="compose">
+    </div>
+  </div>
+
+  <div class="users-connected">
+  </div>
+</div>
