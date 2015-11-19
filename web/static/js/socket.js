@@ -8,11 +8,13 @@ import {Socket} from "deps/phoenix/web/static/js/phoenix"
 var socket = null;
 
 if(document.getElementById('chat')){
-  socket = new Socket("/socket", {params: {token: window.userToken}});
-  let room = document.getElementById('chat').dataset.room;
-  let chatInput = document.getElementById('chat_message');
+  let chatElement = document.getElementById('chat')
+  let username = chatElement.dataset.username
+  let room = chatElement.dataset.room
+  let chatInput = document.getElementById('chat_message')
   let log = document.getElementsByClassName('log')[0]
 
+  socket = new Socket("/socket", {params: {username: username}});
   socket.connect()
 
   // Now that you are connected, you can join channels with a topic:
@@ -27,7 +29,7 @@ if(document.getElementById('chat')){
 
   channel.on("new_msg", payload => {
     let messageNode = document.createElement('p')
-    messageNode.innerText = `[${Date()}] ${payload.body}`
+    messageNode.innerText = `[${Date()}] ${payload.sender} - ${payload.body}`
     log.appendChild(messageNode)
   })
 

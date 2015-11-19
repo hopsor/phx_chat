@@ -19,8 +19,8 @@ defmodule PhxChat.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(params, socket) do
+    {:ok, assign(socket, :username, params["username"]) }
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -33,5 +33,5 @@ defmodule PhxChat.UserSocket do
   #     PhxChat.Endpoint.broadcast("users_socket:" <> user.id, "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(_socket), do: nil
+  def id(socket), do: "users_socket:#{socket.assigns.username}"
 end

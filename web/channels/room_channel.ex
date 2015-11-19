@@ -10,7 +10,7 @@ defmodule PhxChat.RoomChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body}
+    broadcast! socket, "new_msg", %{body: body, sender: socket.assigns.username}
     {:noreply, socket}
   end
 

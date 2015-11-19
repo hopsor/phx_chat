@@ -1,4 +1,4 @@
-<div id="chat" data-room="<%= @room %>">
+<div id="chat" data-room="<%= @room %>" data-username="<%= @username %>">
   <div class="messages">
     <div class="log">
     </div>
