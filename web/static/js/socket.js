@@ -5,16 +5,31 @@
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "deps/phoenix/web/static/js/phoenix"
 
-socket = null;
+var socket = null;
 
 if(document.getElementById('chat')){
   socket = new Socket("/socket", {params: {token: window.userToken}});
   let room = document.getElementById('chat').dataset.room;
+  let chatInput = document.getElementById('chat_message');
+  let log = document.getElementsByClassName('log')[0]
 
   socket.connect()
 
   // Now that you are connected, you can join channels with a topic:
-  let channel = socket.channel(`topic:${room}`, {})
+  let channel = socket.channel(`rooms:${room}`, {})
+
+  chatInput.onkeypress = function(event) {
+    if(event.keyCode === 13){
+      channel.push("new_msg", {body: chatInput.value})
+      chatInput.value = ""
+    }
+  };
+
+  channel.on("new_msg", payload => {
+    let messageNode = document.createElement('p')
+    messageNode.innerText = `[${Date()}] ${payload.body}`
+    log.appendChild(messageNode)
+  })
 
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
