@@ -2,7 +2,7 @@ defmodule PhxChat.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", PhxChat.RoomChannel
+  channel "rooms:*", PhxChat.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

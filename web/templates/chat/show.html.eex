@@ -1,9 +1,10 @@
-<div id="chat">
+<div id="chat" data-room="<%= @room %>">
   <div class="messages">
     <div class="log">
     </div>
 
     <div class="compose">
+      <input id="chat_message" type="text" />
     </div>
   </div>
 

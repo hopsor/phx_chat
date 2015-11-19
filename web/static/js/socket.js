@@ -5,7 +5,23 @@
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "deps/phoenix/web/static/js/phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+socket = null;
+
+if(document.getElementById('chat')){
+  socket = new Socket("/socket", {params: {token: window.userToken}});
+  let room = document.getElementById('chat').dataset.room;
+
+  socket.connect()
+
+  // Now that you are connected, you can join channels with a topic:
+  let channel = socket.channel(`topic:${room}`, {})
+
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+}
+
+export default socket
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -50,13 +66,3 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 //
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
-
-socket.connect()
-
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-
-export default socket
