@@ -1,5 +1,7 @@
 defmodule PhxChat.RoomChannel do
   use Phoenix.Channel
+  alias PhxChat.Repo
+  alias PhxChat.Message
 
   def join("rooms:lobby", _message, socket) do
     {:ok, socket}
@@ -10,8 +12,14 @@ defmodule PhxChat.RoomChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body, sender: socket.assigns.username}
-    {:noreply, socket}
+    sender = socket.assigns.username
+    changeset = Message.changeset(%Message{}, %{"content" => body, "room" => socket.topic, "user" => sender})
+
+    case Repo.insert(changeset) do
+      {:ok, _message} ->
+        broadcast! socket, "new_msg", %{body: body, sender: sender}
+        {:noreply, socket}
+    end
   end
 
   def handle_out("new_msg", payload, socket) do

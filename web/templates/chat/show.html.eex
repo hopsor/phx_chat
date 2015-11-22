@@ -1,6 +1,9 @@
 <div id="chat" data-room="<%= @room %>" data-username="<%= @username %>">
   <div class="messages">
     <div class="log">
+      <%= for message <- @messages do %>
+        <p>[<%= message.inserted_at %>] <%= message.user %> - <%= message.content %></p>
+      <% end %>
     </div>
 
     <div class="compose">
